@@ -25,7 +25,7 @@ class UserController extends Controller
     }
 
     public function create(Request $req){
-        // if($req->user()->rol != 'A') return response()->json(['status'=>'failed'], 401);
+         if($req->user()->rol != 'A') return response()->json(['status'=>'failed'], 401);
         $this->validate($req, [
             'user'=>'required',
             'nombre'=>'required',
@@ -46,7 +46,7 @@ class UserController extends Controller
     }
 
     public function update(Request $req, $user){
-       // if($req->user()->rol != 'A') return response()->json(['status'=>'failed'], 401);
+        if($req->user()->rol != 'A') return response()->json(['status'=>'failed'], 401);
         $this->validate($req, [
             'user'=>'filled',
             'nombre'=>'filled',
