@@ -23,7 +23,7 @@ $router->get('/login/{user}/{pass}', 'AuthController@login');
 
 //proteger el acceso desde la url si no es usuario administrador
 $router->group(
-    ['middleware' => ['auth']],
+    ['middleware' => ['auth', 'cors']],
     function () use ($router) {
 
 

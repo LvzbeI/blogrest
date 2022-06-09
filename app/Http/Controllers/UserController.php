@@ -9,109 +9,69 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index(Request $req)
-    {
-         if ($req->user()->rol != 'A') return response()->json(['status'=>'failed'],401);
-
-
+    public function index(Request $req){
+        if($req->user()->rol != 'A') return response()->json(['status'=>'failed'], 401);
         return User::all();
     }
 
-    //consultar por nombre de usuario
-    public function get(Request $req, $user)
-    {
-          if ($req->user()->rol != 'A') return response()->json(['status'=>'failed'],401);
-
+    public function get(Request $req, $user){
+        if($req->user()->rol != 'A') return response()->json(['status'=>'failed'], 401);
         $result = User::find($user);
-        // $result = DB::table('users')
-        //         ->where('user', '=', $user)
-        //         ->get();
-        if ($result) {
+        //$result = DB::table('users')->where('user', '=', $user)->get();
+        if($result)
             return $result;
-        } else {
-            return response()->json(['status' => 'failed'], 404);
-        }
+        else
+            return response()->json(['status'=>'failed'], 404);
     }
 
-    public function create(Request $req)
-    {
-  if ($req->user()->rol != 'A') return response()->json(['status'=>'failed'],401);
-        $this->validate(
-            $req,
-            [
-                'user' => 'required',
-                'pass' => 'required',
-                'nombre' => 'required',
-                'rol' => 'required'
-            ]
-        );
+    public function create(Request $req){
+        if($req->user()->rol != 'A') return response()->json(['status'=>'failed'], 401);
+        $this->validate($req, [
+            'user'=>'required',
+            'nombre'=>'required',
+            'pass'=>'required',
+            'rol'=>'required']);
 
         $datos = new User;
-
         // $datos->user = $req->user;
-        //hasheando la contrasena
-        $datos->pass = Hash::make( $req->pass);
+        $datos->pass = Hash::make( $req->pass );
         // $datos->nombre = $req->nombre;
         // $datos->rol = $req->rol;
         // $datos->save();
-
-
         $result = $datos->fill($req->all())->save();
-
-        if ($result) {
-            return response()->json(['status' => 'success'], 200);
-        } else {
-            return response()->json(['status' => 'failed'], 404);
-        }
+        if($result)
+            return response()->json(['status'=>'success'], 200);
+        else
+            return response()->json(['status'=>'failed'], 404);
     }
 
-
-
-
-     public function update(Request $req, $user)
-    {
-  if ($req->user()->rol != 'A') return response()->json(['status'=>'failed'],401);
-        $this->validate(
-            $req,
-            [
-                'user' => 'filled',
-                'nombre' => 'filled',
-                'pass' => 'filled',
-                'rol' => 'filled'
-            ]
-        );
+    public function update(Request $req, $user){
+        if($req->user()->rol != 'A') return response()->json(['status'=>'failed'], 401);
+        $this->validate($req, [
+            'user'=>'filled',
+            'nombre'=>'filled',
+            'pass'=>'filled',
+            'rol'=>'filled']);
 
         $datos = User::find($user);
-     //   $datos->pass = $req->pass;
-
-
+        $datos->pass = Hash::make( $req->pass );
+        if(!$datos) return response()->json(['status'=>'failed'], 404);
         $result = $datos->fill($req->all())->save();
-
-        if ($result) {
-            return response()->json(['status' => 'success'], 200);
-        } else {
-            return response()->json(['status' => 'failed'], 404);
-        }
+        if($result)
+            return response()->json(['status'=>'success'], 200);
+        else
+            return response()->json(['status'=>'failed'], 404);
     }
 
-      public function destroy(Request $req, $user)
-    {
-          if ($req->user()->rol != 'A') return response()->json(['status'=>'failed'],401);
+    public function destroy(Request $req, $user){
+        if($req->user()->rol != 'A') return response()->json(['status'=>'failed'], 401);
         $datos = User::find($user);
-        if (!$datos) {
-            return response()->json(['status' => 'failed'], 404);
-        }
-        $result= $datos->delete();
-
-        if ($result) {
-            return response()->json(['status' => 'success'], 200);
-        } else {
-            return response()->json(['status' => 'failed'], 404);
-        }
+        if(!$datos) return response()->json(['status'=>'failed'], 404);
+        $result = $datos->delete();
+        if($result)
+            return response()->json(['status'=>'success'], 200);
+        else
+            return response()->json(['status'=>'failed'], 404);
     }
-
-
-
-
 
 }

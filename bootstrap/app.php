@@ -80,6 +80,7 @@ $app->configure('app');
 // Se habilita el middleware para controlar el acceso
  $app->routeMiddleware([
      'auth' => App\Http\Middleware\Authenticate::class,
+     'cors' => App\Http\Middleware\CorsMiddleware::class,
  ]);
 
 /*
