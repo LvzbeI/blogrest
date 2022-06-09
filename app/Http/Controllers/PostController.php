@@ -37,8 +37,8 @@ class PostController extends Controller
     public function update(Request $req, $id){
         $this->validate($req, [
             'mensaje'=>'filled']);
-
-
+        
+        
         $datos = Post::find($id);
         if(!$datos) return response()->json(['status'=>'failed'], 404);
         if($req->user()->user != $datos->user) return response()->json(['status'=>'failed'], 401);
@@ -50,7 +50,7 @@ class PostController extends Controller
     }
 
     public function destroy($id){
-
+        
         $datos = Post::find($id);
         if(!$datos) return response()->json(['status'=>'failed'], 404);
         $result = $datos->delete();

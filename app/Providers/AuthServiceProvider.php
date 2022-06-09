@@ -30,32 +30,18 @@ class AuthServiceProvider extends ServiceProvider
         // application. The callback which receives the incoming request instance
         // should return either a User instance or null. You're free to obtain
         // the User instance via an API token or any other method necessary.
-        //Reglas para los usuarios que puedan acceder
+
         $this->app['auth']->viaRequest('api', function ($request) {
-
-            $token  = $request->header('Authorization');
-            if (strstr($token, "Bearer")) {
-                $token = substr($token, 7);
+            $token = $request->header('Authorization');
+            if(strstr($token,"Bearer")){
+                $token = substr($token,7);
             }
-
             if ($token) {
-                if (JWT::verify($token, env(
-                    'JWT_SECRET',
-                    'sqe6ezCV9YRm6DZNsfEvmq0vEn0k5WKb'
-                ))==0) {
-                    return JWT::get_data($token,  env(
-                        'JWT_SECRET',
-                        'sqe6ezCV9YRm6DZNsfEvmq0vEn0k5WKb'
-                    ));
+                if(JWT::verify($token, env('JWT_SECRET', 'zI1kkt1jFuJ57EcM2eduWC3gAUMJCKfG'))==0){
+                    $data = JWT::get_data($token, env('JWT_SECRET', 'zI1kkt1jFuJ57EcM2eduWC3gAUMJCKfG'));
+                    return User::find($data['user']);
                 }
             }
-
-
-            // if ($request->input('api_token')) {
-            //     return User::where('api_token', $request->input('api_token'))->first();
-            // }
-
-
         });
     }
 }

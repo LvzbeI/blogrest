@@ -12,56 +12,39 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
+use Illuminate\Http\Request;
 
-//ruta raiz
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-//Controlador para el Login
-$router->get('/login/{user}/{pass}', 'AuthController@login');
+//$router->group(['middleware'=>['cors']], function() use($router){
+    $router->get('/login/{user}/{pass}', 'AuthController@login');
+    
+//});
 
-//proteger el acceso desde la url si no es usuario administrador
-$router->group(
-    ['middleware' => ['auth', 'cors']],
-    function () use ($router) {
+$router->group(['middleware'=>['auth']], function() use($router){
+    $router->get('/usuario', 'UserController@index');
+    $router->get('/usuario/{user}', 'UserController@get');
+    $router->post('/usuario', 'UserController@create');
+    $router->put('/usuario/{user}', 'UserController@update');
+    $router->delete('/usuario/{user}', 'UserController@destroy');
 
+    $router->get('/topic', 'TopicController@index');
+    $router->get('/topic/{id}', 'TopicController@get');
+    $router->post('/topic', 'TopicController@create');
+    $router->put('/topic/{id}', 'TopicController@update');
+    $router->delete('/topic/{id}', 'TopicController@destroy');
 
-
-        // Ejecutar Controlador USer en la ur: /u (consulta de registros de usuarios)
-        $router->get('/usuario', 'UserController@index');  //nombre controlador@nombre de la funcion
-
-        // Buscar usuario por medio de id : /public/u/1
-        $router->get('/usuario/{user}', 'UserController@get');
-
-        //Crear usuario nuevo
-        $router->post('/usuario', 'UserController@create');
-
-        //Actualizar usuario
-        $router->put('/usuario/{user}', 'UserController@update');
-
-        //Eliminar usuario
-        $router->delete('/usuario/{user}', 'UserController@destroy');
-
-
-
-
-
-
-        $router->get('/topic', 'TopicController@index');
-        $router->get('/topic/{id}', 'TopicController@get');
-        $router->post('/topic', 'TopicController@create');
-        $router->put('/topic/{id}', 'TopicController@update');
-        $router->delete('/topic/{id}', 'TopicController@destroy');
-
-        $router->get('/post', 'PostController@index');
-        $router->get('/post/{id_topic}', 'PostController@get');
-        $router->post('/post', 'PostController@create');
-        $router->put('/post/{id}', 'PostController@update');
-        $router->delete('/post/{id}', 'PostController@destroy');
-
-
-
-        //$router->get('/topic', 'TopicController@destroy');
-    }
+    $router->get('/post', 'PostController@index');
+    $router->get('/post/{id_topic}', 'PostController@get');
+    $router->post('/post', 'PostController@create');
+    $router->put('/post/{id}', 'PostController@update');
+    $router->delete('/post/{id}', 'PostController@destroy');
+}
 );
+
+// $router->get('/test', ['middleware' => ['auth'], function (Request $request) use ($router) {
+//     $user = $request->user();
+//     return $user->user;
+// }]);

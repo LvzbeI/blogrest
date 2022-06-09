@@ -12,14 +12,7 @@ use Laravel\Lumen\Auth\Authorizable;
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable, HasFactory;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-
-     //Definir que campo de la tabla es la llave primaria
+    //definir que campo de la tabal es la llave primaria
     protected $primaryKey = 'user';
     protected $keyType = 'string';
     public $incrementing = false;
@@ -28,12 +21,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'user', 'nombre', 'rol'
     ];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
     protected $hidden = [
-        'pass','created_at','updated_at'
+        'pass', 'created_at', 'updated_at'
     ];
 }

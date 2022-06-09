@@ -7,7 +7,7 @@ class JWT{
         $time = time();
         $values = array(
             'jti' => base64_encode(openssl_random_pseudo_bytes(32)),
-            'iat' => $time,
+            'iat' => $time, 
             'exp' => $time + $expire,
             'data' => $data
         );
@@ -19,7 +19,7 @@ class JWT{
         $jwt = $base64url_header . "." . $base64url_payload . "." . $base64url_signature;
         return $jwt;
     }
-
+    
     public static function verify_signature($jwt, $secret_key){
         $jwt_values = explode('.', $jwt);
         if(count($jwt_values)<3) return false;
@@ -39,7 +39,7 @@ class JWT{
                     return true;
                 else
                     return false;
-            else
+            else 
                 return true;
     }
 
@@ -73,11 +73,11 @@ class JWT{
         }
     }
 
-    public static function base64url_encode($data) {
-        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
-    }
-
-    public static function base64url_decode($data) {
-        return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
-    }
+    public static function base64url_encode($data) { 
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '='); 
+    } 
+      
+    public static function base64url_decode($data) { 
+        return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT)); 
+    } 
 }

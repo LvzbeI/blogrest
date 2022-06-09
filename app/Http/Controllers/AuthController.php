@@ -10,7 +10,7 @@ class AuthController extends Controller
 {
     public function login($user,$pass){
         // $this->validate($req, [
-        //     'user'=>'required',
+        //     'user'=>'required', 
         //     'pass'=>'required']);
 
         $result = User::find($user);
@@ -29,6 +29,6 @@ class AuthController extends Controller
             return response()->json(['status'=>'failed'], 404);
         }
 
-
+    
     }
 }
